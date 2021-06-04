@@ -8,7 +8,7 @@ enum class CelestialBody(
     val color: Color, // The color used when drawing the celestial body
     val sizeRadiusMultiplier: Float, // The relative radius of the celestial body to the Sun
     val orbitRadiusMultiplier: Float, // The radius of the circular orbit, relative to the radius of the Solar system
-    val orbitInitialOffset: Float, // The starting position (between 0f and 1f)
+    val orbitInitialProgress: Float, // The starting position (between 0f and 1f)
     val orbitRotationSpeedMultiplier: Float, // The speed of the orbit, relative to the simulation speed baseline
     val orbitCenter: CelestialBody? // Reference to a celestial body that the current one is rotating around
 ) {
@@ -18,7 +18,7 @@ enum class CelestialBody(
         color = Color.White,
         sizeRadiusMultiplier = 1f,
         orbitRadiusMultiplier = 0f,
-        orbitInitialOffset = 0f,
+        orbitInitialProgress = 0f,
         orbitRotationSpeedMultiplier = 2f,
         orbitCenter = null
     ),
@@ -28,7 +28,7 @@ enum class CelestialBody(
         color = Color.LightGray,
         sizeRadiusMultiplier = 0.2f,
         orbitRadiusMultiplier = 0.1f,
-        orbitInitialOffset = 0f,
+        orbitInitialProgress = 0f,
         orbitRotationSpeedMultiplier = 2f,
         orbitCenter = SUN
     ),
@@ -38,7 +38,7 @@ enum class CelestialBody(
         color = Color.Yellow,
         sizeRadiusMultiplier = 0.25f,
         orbitRadiusMultiplier = 0.18f,
-        orbitInitialOffset = 0.1f,
+        orbitInitialProgress = 0.1f,
         orbitRotationSpeedMultiplier = 2.5f,
         orbitCenter = SUN
     ),
@@ -48,7 +48,7 @@ enum class CelestialBody(
         color = Color.Blue,
         sizeRadiusMultiplier = 0.4f,
         orbitRadiusMultiplier = 0.22f,
-        orbitInitialOffset = 0.2f,
+        orbitInitialProgress = 0.2f,
         orbitRotationSpeedMultiplier = 1f,
         orbitCenter = SUN
     ),
@@ -58,7 +58,7 @@ enum class CelestialBody(
         color = Color.LightGray,
         sizeRadiusMultiplier = 0.15f,
         orbitRadiusMultiplier = 0.08f,
-        orbitInitialOffset = 0.2f,
+        orbitInitialProgress = 0.2f,
         orbitRotationSpeedMultiplier = 5f,
         orbitCenter = EARTH
     ),
@@ -68,7 +68,7 @@ enum class CelestialBody(
         color = Color.Red,
         sizeRadiusMultiplier = 0.4f,
         orbitRadiusMultiplier = 0.3f,
-        orbitInitialOffset = 0.8f,
+        orbitInitialProgress = 0.8f,
         orbitRotationSpeedMultiplier = -0.7f,
         orbitCenter = SUN
     ),
@@ -78,7 +78,7 @@ enum class CelestialBody(
         color = Color.Magenta,
         sizeRadiusMultiplier = 0.6f,
         orbitRadiusMultiplier = 0.4f,
-        orbitInitialOffset = 0.5f,
+        orbitInitialProgress = 0.5f,
         orbitRotationSpeedMultiplier = 0.3f,
         orbitCenter = SUN
     ),
@@ -88,7 +88,7 @@ enum class CelestialBody(
         color = Color.Green,
         sizeRadiusMultiplier = 0.2f,
         orbitRadiusMultiplier = 0.08f,
-        orbitInitialOffset = 0.5f,
+        orbitInitialProgress = 0.5f,
         orbitRotationSpeedMultiplier = -0.9f,
         orbitCenter = JUPITER
     ),
@@ -98,7 +98,7 @@ enum class CelestialBody(
         color = Color.DarkGray,
         sizeRadiusMultiplier = 0.18f,
         orbitRadiusMultiplier = 0.1f,
-        orbitInitialOffset = 0.2f,
+        orbitInitialProgress = 0.2f,
         orbitRotationSpeedMultiplier = 0.8f,
         orbitCenter = JUPITER
     )

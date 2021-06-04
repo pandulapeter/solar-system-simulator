@@ -15,6 +15,7 @@ fun main() {
         events = WindowEvents(
             onResize = { windowSize.value = it }
         ),
+        size = IntSize(640, 360),
         title = "Solar System Simulator"
     ) {
         SolarSystemApplication(windowSize.value, rotationController)

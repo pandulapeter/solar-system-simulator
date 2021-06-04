@@ -14,8 +14,7 @@ class RotationController(celestialBodies: List<CelestialBody>) {
             }.let { orbitingAround ->
                 celestialBodyPosition.copyWithRotationOnPath(
                     amount = deltaTime * simulationSpeedMultiplier,
-                    orbitCenterXMultiplier = orbitingAround?.xMultiplier ?: celestialBodyPosition.orbitCenterXMultiplier,
-                    orbitCenterYMultiplier = orbitingAround?.yMultiplier ?: celestialBodyPosition.orbitCenterYMultiplier
+                    orbitCenterOffsetMultiplier = orbitingAround?.multiplierOffset ?: celestialBodyPosition.orbitCenterOffsetMultiplier
                 )
             }
         }

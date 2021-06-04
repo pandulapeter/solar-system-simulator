@@ -1,24 +1,25 @@
 package data
 
+import androidx.compose.ui.geometry.Offset
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 data class CelestialBodyPosition(
     val celestialBody: CelestialBody,
-    val orbitCenterXMultiplier: Float = 0.5f,
-    val orbitCenterYMultiplier: Float = 0.5f,
-    private val currentPathRotationOffset: Float = celestialBody.orbitInitialOffset
+    val orbitCenterOffsetMultiplier: Offset = Offset(0.5f, 0.5f),
+    private val currentPathRotationProgress: Float = celestialBody.orbitInitialProgress
 ) {
-    val xMultiplier = orbitCenterXMultiplier + cos(PI * 2f * currentPathRotationOffset).toFloat() * celestialBody.orbitRadiusMultiplier * 0.5f
-    val yMultiplier = orbitCenterYMultiplier + sin(PI * 2f * currentPathRotationOffset).toFloat() * celestialBody.orbitRadiusMultiplier * 0.5f
+    val multiplierOffset = Offset(
+        x = orbitCenterOffsetMultiplier.x + cos(PI * 2f * currentPathRotationProgress).toFloat() * celestialBody.orbitRadiusMultiplier * 0.5f,
+        y = orbitCenterOffsetMultiplier.y + sin(PI * 2f * currentPathRotationProgress).toFloat() * celestialBody.orbitRadiusMultiplier * 0.5f
+    )
 
     fun copyWithRotationOnPath(
         amount: Float,
-        orbitCenterXMultiplier: Float,
-        orbitCenterYMultiplier: Float
+        orbitCenterOffsetMultiplier: Offset
     ): CelestialBodyPosition {
-        var newOffset = currentPathRotationOffset + (celestialBody.orbitRotationSpeedMultiplier * amount)
+        var newOffset = currentPathRotationProgress + (celestialBody.orbitRotationSpeedMultiplier * amount)
         while (newOffset >= 1f) {
             newOffset -= 1f
         }
@@ -26,9 +27,8 @@ data class CelestialBodyPosition(
             newOffset += 1f
         }
         return copy(
-            currentPathRotationOffset = newOffset,
-            orbitCenterXMultiplier = orbitCenterXMultiplier,
-            orbitCenterYMultiplier = orbitCenterYMultiplier
+            currentPathRotationProgress = newOffset,
+            orbitCenterOffsetMultiplier = orbitCenterOffsetMultiplier
         )
     }
 }
