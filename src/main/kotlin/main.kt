@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.IntSize
 import data.CelestialBody
 import data.RotationController
-import ui.SolarSystemApplication
+import ui.SolarSystemSimulator
 
 fun main() {
 
@@ -18,6 +18,9 @@ fun main() {
         size = IntSize(640, 360),
         title = "Solar System Simulator"
     ) {
-        SolarSystemApplication(windowSize.value, rotationController)
+        SolarSystemSimulator(
+            windowSize = windowSize.value,
+            rotationController = rotationController
+        )
     }
 }
