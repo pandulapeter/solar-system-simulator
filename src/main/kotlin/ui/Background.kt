@@ -1,6 +1,8 @@
 package ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -13,31 +15,35 @@ import ui.resources.Colors
 
 @Composable
 fun Background(windowSize: IntSize) {
-    Cloud(
-        windowSize = windowSize,
-        color = Colors.background2,
-        offset = 0.24f
-    )
-    Cloud(
-        windowSize = windowSize,
-        color = Colors.background3,
-        offset = 0.19f
-    )
-    Cloud(
-        windowSize = windowSize,
-        color = Colors.background4,
-        offset = 0.15f
-    )
-    Cloud(
-        windowSize = windowSize,
-        color = Colors.background5,
-        offset = 0.12f
-    )
-    Cloud(
-        windowSize = windowSize,
-        color = Colors.background6,
-        offset = 0.1f
-    )
+    Box(
+        modifier = Modifier.background(Colors.background1)
+    ) {
+        Cloud(
+            windowSize = windowSize,
+            color = Colors.background2,
+            offset = 0.24f
+        )
+        Cloud(
+            windowSize = windowSize,
+            color = Colors.background3,
+            offset = 0.19f
+        )
+        Cloud(
+            windowSize = windowSize,
+            color = Colors.background4,
+            offset = 0.15f
+        )
+        Cloud(
+            windowSize = windowSize,
+            color = Colors.background5,
+            offset = 0.12f
+        )
+        Cloud(
+            windowSize = windowSize,
+            color = Colors.background6,
+            offset = 0.1f
+        )
+    }
 }
 
 @Composable

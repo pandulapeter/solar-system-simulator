@@ -30,18 +30,19 @@ data class CelestialBodyState(
         while (newOffset < 0f) {
             newOffset += 1f
         }
+        val transitionSpeedMultiplier = (Constants.transitionSpeed / Constants.celestialBodyRotationMultiplier) * frameRateMultiplier
         return copy(
             orbitProgress = newOffset,
             centerPosition = orbitCenterRelativePosition,
             alphaMultiplier = if (selectedCelestialBody == null || selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(alphaMultiplier + Constants.transitionSpeed * frameRateMultiplier)
+                1f.coerceAtMost(alphaMultiplier + transitionSpeedMultiplier)
             } else {
-                0f.coerceAtLeast(alphaMultiplier - Constants.transitionSpeed * frameRateMultiplier)
+                0f.coerceAtLeast(alphaMultiplier - transitionSpeedMultiplier)
             },
             scaleMultiplier = if (selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(scaleMultiplier + Constants.transitionSpeed * frameRateMultiplier)
+                1f.coerceAtMost(scaleMultiplier + transitionSpeedMultiplier)
             } else {
-                0f.coerceAtLeast(scaleMultiplier - Constants.transitionSpeed * frameRateMultiplier)
+                0f.coerceAtLeast(scaleMultiplier - transitionSpeedMultiplier)
             }
         )
     }

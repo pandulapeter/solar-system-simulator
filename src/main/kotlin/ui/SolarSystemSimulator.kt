@@ -1,6 +1,7 @@
 package ui
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +13,6 @@ import data.CelestialBody
 import data.CelestialBodyState
 import data.RotationController
 import kotlinx.coroutines.isActive
-import ui.resources.Colors
 
 @Composable
 fun SolarSystemSimulator(
@@ -49,6 +49,9 @@ fun SolarSystemSimulator(
                     lastSelectedCelestialBodyName = it.displayName
                 }
             }
+        },
+        onCelestialBackgroundClicked = {
+            selectedCelestialBody = null
         }
     )
     Interface(
@@ -64,12 +67,17 @@ private fun SolarSystem(
     transitionProgress: Float,
     celestialBodyStates: List<CelestialBodyState>,
     selectedCelestialBody: CelestialBody?,
-    onCelestialBodySelected: (CelestialBody) -> Unit
+    onCelestialBodySelected: (CelestialBody) -> Unit,
+    onCelestialBackgroundClicked: () -> Unit
 ) = Box(
     modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .background(Colors.background1)
+        .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null,
+            onClick = onCelestialBackgroundClicked
+        )
 ) {
     Background(
         windowSize = windowSize

@@ -2,10 +2,11 @@ package data
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.imageFromResource
+import ui.resources.Strings
 
 enum class CelestialBody(
-    val displayName: String, // Name of the celestial body as it appears on the UI
-    val description: String, // Short description for the detail screen
+    val displayName: String = "", // Name of the celestial body as it appears on the UI
+    val description: String = "", // Short description for the detail screen
     val asset: ImageBitmap, // The bitmap image asset for the celestial body
     val sizeRadiusMultiplier: Float, // The relative radius of the celestial body to the Sun
     val orbitRadiusMultiplier: Float, // The radius of the circular orbit, relative to the radius of the Solar system
@@ -14,8 +15,8 @@ enum class CelestialBody(
     val orbitCenter: CelestialBody? // Reference to a celestial body that the current one is rotating around
 ) {
     SUN(
-        displayName = "Sun",
-        description = "The center of the Solar System",
+        displayName = Strings.CelestialBody.Sun.displayName,
+        description = Strings.CelestialBody.Sun.description,
         asset = imageFromResource("images/sun.webp"),
         sizeRadiusMultiplier = 1f,
         orbitRadiusMultiplier = 0f,
@@ -24,8 +25,8 @@ enum class CelestialBody(
         orbitCenter = null
     ),
     MERCURY(
-        displayName = "Mercury",
-        description = "The first planet",
+        displayName = Strings.CelestialBody.Mercury.displayName,
+        description = Strings.CelestialBody.Mercury.description,
         asset = imageFromResource("images/mercury.webp"),
         sizeRadiusMultiplier = 0.2f,
         orbitRadiusMultiplier = 0.15f,
@@ -34,8 +35,8 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     VENUS(
-        displayName = "Venus",
-        description = "The second planet",
+        displayName = Strings.CelestialBody.Venus.displayName,
+        description = Strings.CelestialBody.Venus.description,
         asset = imageFromResource("images/venus.webp"),
         sizeRadiusMultiplier = 0.25f,
         orbitRadiusMultiplier = 0.2f,
@@ -44,8 +45,8 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     EARTH(
-        displayName = "Earth",
-        description = "The third planet",
+        displayName = Strings.CelestialBody.Earth.displayName,
+        description = Strings.CelestialBody.Earth.description,
         asset = imageFromResource("images/earth.webp"),
         sizeRadiusMultiplier = 0.4f,
         orbitRadiusMultiplier = 0.25f,
@@ -54,8 +55,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     MOON(
-        displayName = "Moon",
-        description = "Earth's only moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.1f,
         orbitRadiusMultiplier = 0.06f,
@@ -64,8 +63,8 @@ enum class CelestialBody(
         orbitCenter = EARTH
     ),
     MARS(
-        displayName = "Mars",
-        description = "The fourth planet",
+        displayName = Strings.CelestialBody.Mars.displayName,
+        description = Strings.CelestialBody.Mars.description,
         asset = imageFromResource("images/mars.webp"),
         sizeRadiusMultiplier = 0.4f,
         orbitRadiusMultiplier = 0.3f,
@@ -74,8 +73,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     MARS_MOON_1(
-        displayName = "Mars Moon 1",
-        description = "Mars's first moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.08f,
         orbitRadiusMultiplier = 0.06f,
@@ -84,8 +81,6 @@ enum class CelestialBody(
         orbitCenter = MARS
     ),
     MARS_MOON_2(
-        displayName = "Mars Moon 2",
-        description = "Mars's second moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.06f,
         orbitRadiusMultiplier = 0.08f,
@@ -94,8 +89,8 @@ enum class CelestialBody(
         orbitCenter = MARS
     ),
     JUPITER(
-        displayName = "Jupiter",
-        description = "The fifth planet",
+        displayName = Strings.CelestialBody.Jupiter.displayName,
+        description = Strings.CelestialBody.Jupiter.description,
         asset = imageFromResource("images/jupiter.webp"),
         sizeRadiusMultiplier = 0.7f,
         orbitRadiusMultiplier = 0.38f,
@@ -104,8 +99,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     JUPITER_MOON_1(
-        displayName = "Jupiter Moon 1",
-        description = "Jupiter's first moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.1f,
         orbitRadiusMultiplier = 0.16f,
@@ -114,8 +107,6 @@ enum class CelestialBody(
         orbitCenter = JUPITER
     ),
     JUPITER_MOON_2(
-        displayName = "Jupiter Moon 2",
-        description = "Jupiter's second moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.12f,
         orbitRadiusMultiplier = 0.18f,
@@ -124,8 +115,6 @@ enum class CelestialBody(
         orbitCenter = JUPITER
     ),
     JUPITER_MOON_3(
-        displayName = "Jupiter Moon 3",
-        description = "Jupiter's third moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.08f,
         orbitRadiusMultiplier = 0.14f,
@@ -134,8 +123,8 @@ enum class CelestialBody(
         orbitCenter = JUPITER
     ),
     SATURN(
-        displayName = "Saturn",
-        description = "The sixth plane",
+        displayName = Strings.CelestialBody.Saturn.displayName,
+        description = Strings.CelestialBody.Saturn.description,
         asset = imageFromResource("images/saturn.webp"),
         sizeRadiusMultiplier = 0.6f,
         orbitRadiusMultiplier = 0.5f,
@@ -144,8 +133,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     SATURN_MOON_1(
-        displayName = "Saturn Moon 1",
-        description = "Saturn's first moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.1f,
         orbitRadiusMultiplier = 0.1f,
@@ -154,8 +141,6 @@ enum class CelestialBody(
         orbitCenter = SATURN
     ),
     SATURN_MOON_2(
-        displayName = "Saturn Moon 2",
-        description = "Saturn's second moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.08f,
         orbitRadiusMultiplier = 0.12f,
@@ -164,8 +149,6 @@ enum class CelestialBody(
         orbitCenter = SATURN
     ),
     SATURN_MOON_3(
-        displayName = "Saturn Moon 3",
-        description = "Saturn's third moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.05f,
         orbitRadiusMultiplier = 0.15f,
@@ -174,8 +157,8 @@ enum class CelestialBody(
         orbitCenter = SATURN
     ),
     URANUS(
-        displayName = "Uranus",
-        description = "The seventh planet",
+        displayName = Strings.CelestialBody.Uranus.displayName,
+        description = Strings.CelestialBody.Uranus.description,
         asset = imageFromResource("images/uranus.webp"),
         sizeRadiusMultiplier = 0.55f,
         orbitRadiusMultiplier = 0.58f,
@@ -184,8 +167,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     URANUS_MOON_1(
-        displayName = "Uranus Moon 1",
-        description = "Uranus's first moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.1f,
         orbitRadiusMultiplier = 0.08f,
@@ -194,8 +175,6 @@ enum class CelestialBody(
         orbitCenter = URANUS
     ),
     URANUS_MOON_2(
-        displayName = "Uranus Moon 2",
-        description = "Uranus's second moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.09f,
         orbitRadiusMultiplier = 0.08f,
@@ -204,8 +183,6 @@ enum class CelestialBody(
         orbitCenter = URANUS
     ),
     URANUS_MOON_3(
-        displayName = "Uranus Moon 3",
-        description = "Uranus's third moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.06f,
         orbitRadiusMultiplier = 0.1f,
@@ -214,8 +191,6 @@ enum class CelestialBody(
         orbitCenter = URANUS
     ),
     URANUS_MOON_4(
-        displayName = "Uranus Moon 4",
-        description = "Uranus's fourth moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.07f,
         orbitRadiusMultiplier = 0.14f,
@@ -224,8 +199,6 @@ enum class CelestialBody(
         orbitCenter = URANUS
     ),
     URANUS_MOON_5(
-        displayName = "Uranus Moon 5",
-        description = "Uranus's fifth moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.05f,
         orbitRadiusMultiplier = 0.18f,
@@ -234,8 +207,8 @@ enum class CelestialBody(
         orbitCenter = URANUS
     ),
     NEPTUNE(
-        displayName = "Neptune",
-        description = "The eighth planet",
+        displayName = Strings.CelestialBody.Neptune.displayName,
+        description = Strings.CelestialBody.Neptune.description,
         asset = imageFromResource("images/neptune.webp"),
         sizeRadiusMultiplier = 0.5f,
         orbitRadiusMultiplier = 0.7f,
@@ -244,8 +217,6 @@ enum class CelestialBody(
         orbitCenter = SUN
     ),
     NEPTUNE_MOON_1(
-        displayName = "Uranus Moon 1",
-        description = "Uranus's first moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.08f,
         orbitRadiusMultiplier = 0.18f,
@@ -254,8 +225,6 @@ enum class CelestialBody(
         orbitCenter = NEPTUNE
     ),
     NEPTUNE_MOON_2(
-        displayName = "Uranus Moon 2",
-        description = "Uranus's second moon",
         asset = imageFromResource("images/moon.webp"),
         sizeRadiusMultiplier = 0.05f,
         orbitRadiusMultiplier = 0.13f,
