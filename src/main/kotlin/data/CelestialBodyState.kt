@@ -33,20 +33,19 @@ data class CelestialBodyState(
             orbitProgress = newOffset,
             centerPosition = orbitCenterRelativePosition,
             alphaMultiplier = if (selectedCelestialBody == null || selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(alphaMultiplier + FADE_ANIMATION_SPEED * frameRateMultiplier)
+                1f.coerceAtMost(alphaMultiplier + ANIMATION_SPEED * frameRateMultiplier)
             } else {
-                0f.coerceAtLeast(alphaMultiplier - FADE_ANIMATION_SPEED * frameRateMultiplier)
+                0f.coerceAtLeast(alphaMultiplier - ANIMATION_SPEED * frameRateMultiplier)
             },
             scaleMultiplier = if (selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(scaleMultiplier + SCALE_ANIMATION_SPEED * frameRateMultiplier)
+                1f.coerceAtMost(scaleMultiplier + ANIMATION_SPEED * frameRateMultiplier)
             } else {
-                0f.coerceAtLeast(scaleMultiplier - SCALE_ANIMATION_SPEED * frameRateMultiplier)
+                0f.coerceAtLeast(scaleMultiplier - ANIMATION_SPEED * frameRateMultiplier)
             }
         )
     }
 
     companion object {
-        private const val FADE_ANIMATION_SPEED = 60f
-        private const val SCALE_ANIMATION_SPEED = 60f
+        private const val ANIMATION_SPEED = 90f
     }
 }
