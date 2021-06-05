@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
@@ -16,7 +17,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun Orbits(
-    windowSize: IntSize,
+    windowSize: Size,
     celestialBodyStates: List<CelestialBodyState>,
     transitionProgress: Float
 ) {

@@ -10,4 +10,5 @@ object Colors {
     val background5 = Color(0xFF4A3575)
     val background6 = Color(0xFF503985)
     val orbit = Color.White.copy(alpha = 0.2f)
+    val title = Color.White
 }

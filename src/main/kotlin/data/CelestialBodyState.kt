@@ -1,6 +1,7 @@
 package data
 
 import androidx.compose.ui.geometry.Offset
+import ui.resources.Constants
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -33,19 +34,15 @@ data class CelestialBodyState(
             orbitProgress = newOffset,
             centerPosition = orbitCenterRelativePosition,
             alphaMultiplier = if (selectedCelestialBody == null || selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(alphaMultiplier + ANIMATION_SPEED * frameRateMultiplier)
+                1f.coerceAtMost(alphaMultiplier + Constants.transitionSpeed * frameRateMultiplier)
             } else {
-                0f.coerceAtLeast(alphaMultiplier - ANIMATION_SPEED * frameRateMultiplier)
+                0f.coerceAtLeast(alphaMultiplier - Constants.transitionSpeed * frameRateMultiplier)
             },
             scaleMultiplier = if (selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(scaleMultiplier + ANIMATION_SPEED * frameRateMultiplier)
+                1f.coerceAtMost(scaleMultiplier + Constants.transitionSpeed * frameRateMultiplier)
             } else {
-                0f.coerceAtLeast(scaleMultiplier - ANIMATION_SPEED * frameRateMultiplier)
+                0f.coerceAtLeast(scaleMultiplier - Constants.transitionSpeed * frameRateMultiplier)
             }
         )
-    }
-
-    companion object {
-        private const val ANIMATION_SPEED = 90f
     }
 }

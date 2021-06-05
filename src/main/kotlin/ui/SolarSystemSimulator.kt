@@ -6,37 +6,38 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.IntSize
 import data.CelestialBody
 import data.CelestialBodyState
 import data.RotationController
 import kotlinx.coroutines.isActive
 import ui.resources.Colors
-import kotlin.math.roundToInt
 
 @Composable
 fun SolarSystemSimulator(
     windowSize: IntSize,
     rotationController: RotationController
 ) {
-    var celestialBodyPositions by remember { mutableStateOf(emptyList<CelestialBodyState>()) }
-    var simulationSpeedMultiplier by remember { mutableStateOf(0.2f) }
+    var celestialBodyStates by remember { mutableStateOf(emptyList<CelestialBodyState>()) }
     var selectedCelestialBody by remember { mutableStateOf<CelestialBody?>(null) }
+    var lastSelectedCelestialBodyName by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         while (isActive) {
             withFrameMillis { time ->
-                celestialBodyPositions = rotationController.update(
+                celestialBodyStates = rotationController.update(
                     time = time,
-                    simulationSpeedMultiplier = simulationSpeedMultiplier,
                     selectedCelestialBody = selectedCelestialBody
                 )
             }
         }
     }
+    val transitionProgress = celestialBodyStates.firstOrNull { it.celestialBody == CelestialBody.MOON }?.alphaMultiplier ?: 1f
     SolarSystem(
         windowSize = windowSize,
-        celestialBodyStates = celestialBodyPositions,
+        transitionProgress = transitionProgress,
+        celestialBodyStates = celestialBodyStates,
         selectedCelestialBody = selectedCelestialBody,
         onCelestialBodySelected = { clickedCelestialBody ->
             if (
@@ -44,20 +45,23 @@ fun SolarSystemSimulator(
                 (selectedCelestialBody == null || clickedCelestialBody == selectedCelestialBody)
             ) {
                 selectedCelestialBody = if (selectedCelestialBody == clickedCelestialBody) null else clickedCelestialBody
+                selectedCelestialBody?.let {
+                    lastSelectedCelestialBodyName = it.displayName
+                }
             }
         }
     )
-//    Slider(
-//        modifier = Modifier.fillMaxWidth(0.25f),
-//        value = simulationSpeedMultiplier,
-//        valueRange = 0f..2f,
-//        onValueChange = { simulationSpeedMultiplier = it }
-//    )
+    Interface(
+        windowSize = windowSize,
+        transitionProgress = transitionProgress,
+        lastSelectedCelestialBodyName = lastSelectedCelestialBodyName
+    )
 }
 
 @Composable
 private fun SolarSystem(
     windowSize: IntSize,
+    transitionProgress: Float,
     celestialBodyStates: List<CelestialBodyState>,
     selectedCelestialBody: CelestialBody?,
     onCelestialBodySelected: (CelestialBody) -> Unit
@@ -70,10 +74,9 @@ private fun SolarSystem(
     Background(
         windowSize = windowSize
     )
-    val transitionProgress = celestialBodyStates.firstOrNull { it.celestialBody == CelestialBody.MOON }?.alphaMultiplier ?: 1f
-    val modifiedWindowSize = IntSize(
-        width = (windowSize.width * (0.5f + transitionProgress * 0.5f)).roundToInt(),
-        height = windowSize.height
+    val modifiedWindowSize = Size(
+        width = windowSize.width * (0.5f + transitionProgress * 0.5f),
+        height = windowSize.height.toFloat()
     )
     Orbits(
         windowSize = modifiedWindowSize,

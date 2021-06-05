@@ -1,5 +1,7 @@
 package data
 
+import ui.resources.Constants
+
 class RotationController(celestialBodies: List<CelestialBody>) {
 
     private var previousTime = 0L
@@ -7,7 +9,6 @@ class RotationController(celestialBodies: List<CelestialBody>) {
 
     fun update(
         time: Long,
-        simulationSpeedMultiplier: Float,
         selectedCelestialBody: CelestialBody?
     ): List<CelestialBodyState> {
         val deltaTime = ((time - previousTime) / BASE_SIMULATION_SPEED).toFloat()
@@ -17,7 +18,7 @@ class RotationController(celestialBodies: List<CelestialBody>) {
                 it.celestialBody == celestialBodyPosition.celestialBody.orbitCenter
             }.let { orbitingAround ->
                 celestialBodyPosition.copyWithRotationOnPath(
-                    frameRateMultiplier = deltaTime * simulationSpeedMultiplier,
+                    frameRateMultiplier = deltaTime * Constants.celestialBodyRotationMultiplier,
                     orbitCenterRelativePosition = orbitingAround?.position ?: celestialBodyPosition.centerPosition,
                     selectedCelestialBody = selectedCelestialBody
                 )
