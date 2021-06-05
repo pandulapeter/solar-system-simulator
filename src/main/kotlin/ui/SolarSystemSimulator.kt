@@ -10,6 +10,7 @@ import androidx.compose.material.Slider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -21,6 +22,7 @@ import data.CelestialBodyState
 import data.RotationController
 import kotlinx.coroutines.isActive
 import java.lang.Integer.min
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 @Composable
@@ -74,7 +76,7 @@ private fun SolarSystem(
     modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .background(Color(0xFF503985))
+        .background(Colors.background1)
 ) {
     StarField(
         windowSize = windowSize
@@ -106,22 +108,65 @@ private fun SolarSystem(
                 celestialBody = celestialBodyState.celestialBody,
                 relativePosition = celestialBodyState.position,
                 alphaMultiplier = celestialBodyState.alphaMultiplier,
-                radiusMultiplier = celestialBodyState.radiusMultiplier,
+                scaleMultiplier = celestialBodyState.scaleMultiplier.pow(2),
                 onCelestialBodySelected = onCelestialBodySelected
             )
         }
 }
 
 @Composable
-private fun StarField(
-    windowSize: IntSize
-) {
-    if (windowSize.width > 0 && windowSize.height > 0) {
-        // TODO
-    }
+private fun StarField(windowSize: IntSize) {
+    Cloud(
+        windowSize = windowSize,
+        color = Colors.background2,
+        offset = 0.24f
+    )
+    Cloud(
+        windowSize = windowSize,
+        color = Colors.background3,
+        offset = 0.19f
+    )
+    Cloud(
+        windowSize = windowSize,
+        color = Colors.background4,
+        offset = 0.15f
+    )
+    Cloud(
+        windowSize = windowSize,
+        color = Colors.background5,
+        offset = 0.12f
+    )
+    Cloud(
+        windowSize = windowSize,
+        color = Colors.background6,
+        offset = 0.1f
+    )
 }
 
-private val orbitColor = Color.White.copy(alpha = 0.2f)
+@Composable
+private fun Cloud(
+    windowSize: IntSize,
+    color: Color,
+    offset: Float
+) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        drawOval(
+            color = color,
+            size = Size(
+                width = windowSize.width / offset,
+                height = windowSize.height / offset
+            ),
+            topLeft = Offset(
+                x = -windowSize.width * offset,
+                y = -windowSize.height * offset
+            )
+        )
+    }
+}
 
 @Composable
 private fun Orbit(
@@ -139,7 +184,7 @@ private fun Orbit(
             .height(size.height.dp),
         onDraw = {
             drawOval(
-                color = orbitColor,
+                color = Colors.orbit,
                 style = Stroke(),
                 alpha = transitionProgress
             )
@@ -153,18 +198,18 @@ private fun CelestialBody(
     celestialBody: CelestialBody,
     relativePosition: Offset,
     alphaMultiplier: Float,
-    radiusMultiplier: Float,
+    scaleMultiplier: Float,
     onCelestialBodySelected: (CelestialBody) -> Unit
 ) {
     val baseRadius = min(windowSize.width, windowSize.height) / 10
-    val unselectedRadius = baseRadius * celestialBody.sizeRadiusMultiplier * (1f - radiusMultiplier)
-    val selectedRadius = baseRadius * 2f * radiusMultiplier
+    val unselectedRadius = baseRadius * celestialBody.sizeRadiusMultiplier * (1f - scaleMultiplier)
+    val selectedRadius = baseRadius * 2f * scaleMultiplier
     val radius = (selectedRadius + unselectedRadius).dp
     val interactionSource = remember { MutableInteractionSource() }
-    val unselectedX = (relativePosition.x * (1f - radiusMultiplier) * windowSize.width).dp
-    val selectedX = (0.2f * radiusMultiplier * windowSize.width).dp
-    val unselectedY = (relativePosition.y * (1f - radiusMultiplier) * windowSize.height).dp
-    val selectedY = (0.5f * radiusMultiplier * windowSize.height).dp
+    val unselectedX = (relativePosition.x * (1f - scaleMultiplier) * windowSize.width).dp
+    val selectedX = (0.2f * scaleMultiplier * windowSize.width).dp
+    val unselectedY = (relativePosition.y * (1f - scaleMultiplier) * windowSize.height).dp
+    val selectedY = (0.5f * scaleMultiplier * windowSize.height).dp
     Image(
         modifier = Modifier
             .offset(

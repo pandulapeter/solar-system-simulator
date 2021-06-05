@@ -9,7 +9,7 @@ data class CelestialBodyState(
     val celestialBody: CelestialBody,
     val centerPosition: Offset = Offset(0.5f, 0.5f),
     val alphaMultiplier: Float = 1f,
-    val radiusMultiplier: Float = 1f,
+    val scaleMultiplier: Float = 1f,
     private val orbitProgress: Float = celestialBody.orbitInitialProgress
 ) {
     val position = Offset(
@@ -37,10 +37,10 @@ data class CelestialBodyState(
             } else {
                 0f.coerceAtLeast(alphaMultiplier - FADE_ANIMATION_SPEED * frameRateMultiplier)
             },
-            radiusMultiplier = if (selectedCelestialBody == celestialBody) {
-                1f.coerceAtMost(radiusMultiplier + SCALE_ANIMATION_SPEED * frameRateMultiplier)
+            scaleMultiplier = if (selectedCelestialBody == celestialBody) {
+                1f.coerceAtMost(scaleMultiplier + SCALE_ANIMATION_SPEED * frameRateMultiplier)
             } else {
-                0f.coerceAtLeast(radiusMultiplier - SCALE_ANIMATION_SPEED * frameRateMultiplier)
+                0f.coerceAtLeast(scaleMultiplier - SCALE_ANIMATION_SPEED * frameRateMultiplier)
             }
         )
     }
