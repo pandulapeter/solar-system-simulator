@@ -5,7 +5,11 @@ class RotationController(celestialBodies: List<CelestialBody>) {
     private var previousTime = 0L
     private var celestialBodyPositions = celestialBodies.map { CelestialBodyState(it) }
 
-    fun update(time: Long, simulationSpeedMultiplier: Float): List<CelestialBodyState> {
+    fun update(
+        time: Long,
+        simulationSpeedMultiplier: Float,
+        selectedCelestialBody: CelestialBody?
+    ): List<CelestialBodyState> {
         val deltaTime = ((time - previousTime) / BASE_SIMULATION_SPEED).toFloat()
         previousTime = time
         celestialBodyPositions = celestialBodyPositions.map { celestialBodyPosition ->
@@ -13,8 +17,9 @@ class RotationController(celestialBodies: List<CelestialBody>) {
                 it.celestialBody == celestialBodyPosition.celestialBody.orbitCenter
             }.let { orbitingAround ->
                 celestialBodyPosition.copyWithRotationOnPath(
-                    amount = deltaTime * simulationSpeedMultiplier,
-                    orbitCenterRelativePosition = orbitingAround?.position ?: celestialBodyPosition.relativePosition
+                    frameRateMultiplier = deltaTime * simulationSpeedMultiplier,
+                    orbitCenterRelativePosition = orbitingAround?.position ?: celestialBodyPosition.centerPosition,
+                    selectedCelestialBody = selectedCelestialBody
                 )
             }
         }
