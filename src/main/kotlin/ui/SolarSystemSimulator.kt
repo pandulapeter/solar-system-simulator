@@ -1,10 +1,10 @@
 package ui
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Slider
 import androidx.compose.runtime.*
@@ -17,21 +17,18 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import data.CelestialBody
-import data.CelestialBodyPosition
+import data.CelestialBodyState
 import data.RotationController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import java.lang.Integer.min
 import kotlin.math.roundToInt
 
 @Composable
 fun SolarSystemSimulator(
     windowSize: IntSize,
-    rotationController: RotationController,
-    animationScopes: Map<CelestialBody, CoroutineScope>
+    rotationController: RotationController
 ) {
-    var celestialBodyPositions by remember { mutableStateOf(emptyList<CelestialBodyPosition>()) }
+    var celestialBodyPositions by remember { mutableStateOf(emptyList<CelestialBodyState>()) }
     var simulationSpeedMultiplier by remember { mutableStateOf(0.2f) }
 
     LaunchedEffect(Unit) {
@@ -43,8 +40,7 @@ fun SolarSystemSimulator(
     }
     SolarSystem(
         windowSize = windowSize,
-        celestialBodyPositions = celestialBodyPositions,
-        animationScopes = animationScopes
+        celestialBodyStates = celestialBodyPositions
     )
     Slider(
         modifier = Modifier.fillMaxWidth(0.25f),
@@ -57,8 +53,7 @@ fun SolarSystemSimulator(
 @Composable
 private fun SolarSystem(
     windowSize: IntSize,
-    celestialBodyPositions: List<CelestialBodyPosition>,
-    animationScopes: Map<CelestialBody, CoroutineScope>
+    celestialBodyStates: List<CelestialBodyState>
 ) = Box(
     modifier = Modifier
         .fillMaxWidth()
@@ -68,12 +63,12 @@ private fun SolarSystem(
     StarField(
         windowSize = windowSize
     )
-    celestialBodyPositions.forEach { celestialBodyWrapper ->
+    celestialBodyStates.forEach { celestialBodyWrapper ->
         if (celestialBodyWrapper.celestialBody.orbitCenter != null) {
             Orbit(
                 center = DpOffset(
-                    x = windowSize.width.dp * celestialBodyWrapper.orbitCenterOffsetMultiplier.x,
-                    y = windowSize.height.dp * celestialBodyWrapper.orbitCenterOffsetMultiplier.y
+                    x = windowSize.width.dp * celestialBodyWrapper.relativePosition.x,
+                    y = windowSize.height.dp * celestialBodyWrapper.relativePosition.y
                 ),
                 size = IntSize(
                     width = (windowSize.width * celestialBodyWrapper.celestialBody.orbitRadiusMultiplier).roundToInt(),
@@ -84,36 +79,22 @@ private fun SolarSystem(
         }
     }
 
-    // TODO: Bad code. very bad.
     var selectedCelestialBody by remember { mutableStateOf<CelestialBody?>(null) }
-    val radiusMultiplierAnimatables = remember { CelestialBody.values().map { it to Animatable(1f) }.toMap() }
 
-    celestialBodyPositions.sortedBy { it.multiplierOffset.y }.forEach { celestialBodyWrapper ->
-        CelestialBody(
-            windowSize = windowSize,
-            celestialBody = celestialBodyWrapper.celestialBody,
-            multiplierOffset = celestialBodyWrapper.multiplierOffset,
-            radiusMultiplier = radiusMultiplierAnimatables[celestialBodyWrapper.celestialBody]?.value ?: 1f,
-            selectedCelestialBody = selectedCelestialBody,
-            onCelestialBodySelected = { celestialBody ->
-                if (selectedCelestialBody!=null) {
-                    val oldAnimationScope = animationScopes[selectedCelestialBody]!!
-                    val oldAnimatable = radiusMultiplierAnimatables[selectedCelestialBody]!!
-                    if (celestialBody != selectedCelestialBody) {
-                        oldAnimationScope.launch {
-                            oldAnimatable.animateTo(1f)
-                        }
-                    }
+    celestialBodyStates
+        .sortedBy { it.position.y }
+        .sortedBy { selectedCelestialBody == it.celestialBody }
+        .forEach { celestialBodyWrapper ->
+            CelestialBody(
+                windowSize = windowSize,
+                celestialBody = celestialBodyWrapper.celestialBody,
+                relativePosition = celestialBodyWrapper.position,
+                selectedCelestialBody = selectedCelestialBody,
+                onCelestialBodySelected = { clickedCelestialBody ->
+                    selectedCelestialBody = if (selectedCelestialBody == clickedCelestialBody) null else clickedCelestialBody
                 }
-                val animationScope = animationScopes[celestialBodyWrapper.celestialBody]!!
-                val animatable = radiusMultiplierAnimatables[celestialBodyWrapper.celestialBody]!!
-                animationScope.launch {
-                    animatable.animateTo(if (celestialBody == celestialBodyWrapper.celestialBody) 4f else 1f)
-                }
-                selectedCelestialBody = celestialBody
-            }
-        )
-    }
+            )
+        }
 }
 
 @Composable
@@ -153,24 +134,27 @@ private fun Orbit(
 private fun CelestialBody(
     windowSize: IntSize,
     celestialBody: CelestialBody,
-    multiplierOffset: Offset,
-    radiusMultiplier: Float,
+    relativePosition: Offset,
     selectedCelestialBody: CelestialBody?,
-    onCelestialBodySelected: (CelestialBody?) -> Unit
+    onCelestialBodySelected: (CelestialBody) -> Unit
 ) {
-    val radius = (min(windowSize.width, windowSize.height) / 10 * celestialBody.sizeRadiusMultiplier).dp * radiusMultiplier
+    val radius = (min(windowSize.width, windowSize.height) / 10 * celestialBody.sizeRadiusMultiplier).dp
+    val interactionSource = remember { MutableInteractionSource() }
     Image(
         modifier = Modifier
             .offset(
-                x = windowSize.width.dp * multiplierOffset.x - radius,
-                y = windowSize.height.dp * multiplierOffset.y - radius
+                x = (relativePosition.x * windowSize.width).dp - radius,
+                y = (relativePosition.y * windowSize.height).dp - radius
             )
             .size(radius * 2)
-            .clickable {
-                onCelestialBodySelected(if (selectedCelestialBody == celestialBody) null else celestialBody)
-            },
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { onCelestialBodySelected(celestialBody) }
+            ),
         contentScale = ContentScale.Fit,
         bitmap = celestialBody.asset,
+        alpha = if (selectedCelestialBody == celestialBody || selectedCelestialBody == null) 1f else 0.2f,
         contentDescription = celestialBody.displayName
     )
 }

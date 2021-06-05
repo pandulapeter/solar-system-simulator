@@ -1,7 +1,6 @@
 import androidx.compose.desktop.Window
 import androidx.compose.desktop.WindowEvents
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.IntSize
 import data.CelestialBody
 import data.RotationController
@@ -21,8 +20,7 @@ fun main() {
     ) {
         SolarSystemSimulator(
             windowSize = windowSize.value,
-            rotationController = rotationController,
-            animationScopes = CelestialBody.values().map { it to rememberCoroutineScope() }.toMap()
+            rotationController = rotationController
         )
     }
 }
